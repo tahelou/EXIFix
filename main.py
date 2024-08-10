@@ -1,3 +1,5 @@
+### EXIFix v0.2.0
+
 import os
 import re
 import EXIFix
@@ -52,7 +54,7 @@ for filename in os.listdir(source_folder):
     match_WIN = re.match(pattern_WIN_IMG, filename)
     if match_WIN:
         EXIFix.fix_WIN_IMG(filename, file_path, destination_folder, match_WIN)
-        i_WIN_IMG += 1
+        #i_WIN_IMG += 1
         continue
     
     # If no pattern matches, you can log or handle the file differently
