@@ -1,3 +1,5 @@
+### EXIFix v0.2.0
+
 import os
 import time
 import re
@@ -56,19 +58,7 @@ def fix_WhatsAppIMG(filename,file_path,destination_folder,match):
         exif_data["Exif"][piexif.ExifIFD.DateTimeOriginal] = date_taken_from_mod
         exif_data["Exif"][piexif.ExifIFD.DateTimeDigitized] = date_taken_from_mod
         # print("New EXIF data:",exif_data)
-        
-        new_filename = f"{year}{month}{day}_{file_mod_time_concat}_WA{wa_code}{os.path.splitext(filename)[1]}" # [1] to get the extension .jpg
-        print("New filename:",new_filename)
-        # Save the image with updated EXIF data
-        destination_path = os.path.join(destination_folder, new_filename)
-        exif_bytes = piexif.dump(exif_data)
-        image.save(destination_path, "jpeg", exif=exif_bytes)
-        # Set date modified of new file
-        new_time = datetime(int(year),int(month),int(day),int(file_mod_time_concat[0:2]),int(file_mod_time_concat[2:4]),int(file_mod_time_concat[4:]))
-        timestamp = new_time.timestamp()
-        os.utime(destination_path, (timestamp, timestamp))
-        print("File saved successfully!\n")
-    
+              
     if dateCheck == 0: #update date modified and metadata to match the filename date
         # use date from filename and time from file_mod_time
         filename_date_time_mod = f"{filename_date} {file_mod_time}"
@@ -81,74 +71,24 @@ def fix_WhatsAppIMG(filename,file_path,destination_folder,match):
         exif_data["Exif"][piexif.ExifIFD.DateTimeDigitized] = date_taken_from_filename
         # print("New EXIF data:",exif_data)
         
-        new_filename = f"{year}{month}{day}_{file_mod_time_concat}_WA{wa_code}{os.path.splitext(filename)[1]}" # [1] to get the extension .jpg
-        print("New filename:",new_filename)
-        # Save the image with updated EXIF data
-        destination_path = os.path.join(destination_folder, new_filename)
-        exif_bytes = piexif.dump(exif_data)
-        image.save(destination_path, "jpeg", exif=exif_bytes)
-        # Set date modified of new file
-        new_time = datetime(int(year),int(month),int(day),int(file_mod_time_concat[0:2]),int(file_mod_time_concat[2:4]),int(file_mod_time_concat[4:]))
-        timestamp = new_time.timestamp()
-        os.utime(destination_path, (timestamp, timestamp))
-        print("File saved successfully!\n")
+    new_filename = f"{year}{month}{day}_{file_mod_time_concat}_WA{wa_code}{os.path.splitext(filename)[1]}" # [1] to get the extension .jpg
+    print("New filename:",new_filename)
+    # Create a copy of the file
+    destination_path = os.path.join(destination_folder, new_filename)
+    copy2(file_path, destination_path)
+    print(f"Copied {filename} to {destination_path} and renamed to {new_filename}")
+    
+    # Insert updated EXIF data to the copied image
+    exif_bytes = piexif.dump(exif_data) # Dump EXIF data to bytes
+    piexif.insert(exif_bytes, destination_path)    
+    # image.save(destination_path, "jpeg", exif=exif_bytes)
+    
+    # Set date modified of new file
+    new_time = datetime(int(year),int(month),int(day),int(file_mod_time_concat[0:2]),int(file_mod_time_concat[2:4]),int(file_mod_time_concat[4:]))
+    timestamp = new_time.timestamp()
+    os.utime(destination_path, (timestamp, timestamp))
+    print("File saved successfully!\n")
 
 def fix_WIN_IMG(filename,file_path,destination_folder,match):
     print("Match found (Windows IMG):",filename) # test
     print("WIP\n")
-            
-            
-            
-            #new_filename = f"{year}{month}{day}_WA{wa_code}{os.path.splitext(filename)[1]}" # [1] to get the extension .jpg
-            
-            # # Open the image file
-            # image = Image.open(file_path)
-            
-
-    
-            # # Load EXIF data or initialize if not available
-            # try:
-            #     exif_data = piexif.load(image.info["exif"])
-            # except KeyError:
-            #     exif_data = {"0th": {}, "Exif": {}, "GPS": {}, "1st": {}, "thumbnail": None}
-            
-            # # Extract date taken from EXIF data
-            # date_taken = exif_data["Exif"].get(piexif.ExifIFD.DateTimeOriginal, None)
-            # if date_taken is None:
-            #     date_taken = exif_data["Exif"].get(piexif.ImageIFD.DateTime, None)
-            #     if date_taken is None:
-            #         date_taken = exif_data["0th"].get(piexif.ImageIFD.DateTime, None)
-            #         if date_taken is None: print("No metadata")
-            #         else: print("0th-ImageIFD-DateTime")
-            #     else: print("Exif-ImageIFD-DateTime")
-            # else: print("Exif-ExifIFD-DateTimeOriginal")
-            
-            
-            # if date_taken == filename_date:
-            #     # Date taken matches date in filename
-            #     # Set date modified and created to date taken
-            #     exif_data["0th"][piexif.ImageIFD.DateTime] = date_taken
-            #     exif_data["Exif"][piexif.ExifIFD.DateTimeOriginal] = date_taken
-            #     exif_data["Exif"][piexif.ExifIFD.DateTimeDigitized] = date_taken
-                
-            #     # Copy the original image to the destination with a new name
-            #     destination_path = os.path.join(destination_folder, new_filename)
-            #     copy2(file_path, destination_path)
-            # else:
-            #     # Date taken is wrong, use date from filename
-            #     # Set time to 12 AM with seconds/minutes based on WA code
-            #     new_time = datetime(int(year), int(month), int(day), 0, 0, int(wa_code) % 60)
-            #     new_date = new_time.strftime("%Y:%m:%d %H:%M:%S")
-                
-            #     exif_data["0th"][piexif.ImageIFD.DateTime] = new_date
-            #     exif_data["Exif"][piexif.ExifIFD.DateTimeOriginal] = new_date
-            #     exif_data["Exif"][piexif.ExifIFD.DateTimeDigitized] = new_date
-                
-            #     # Save the image with updated EXIF data to the destination folder
-            #     destination_path = os.path.join(destination_folder, new_filename)
-            #     exif_bytes = piexif.dump(exif_data)
-            #     image.save(destination_path, exif=exif_bytes)
-            
-            # print(f"Processed: {filename} to {new_filename}")
-
-# Example usage:
