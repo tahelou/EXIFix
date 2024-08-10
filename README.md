@@ -5,7 +5,7 @@ A script (WIP) I wrote for myself to fix errors in metadata caused by moving pho
 
 EXIFix - a tool for fixing messy metadata in your photos
 
-I wrote this tool to fix an issue I've been experiencing when trying to back up photos from my phone (Samsung S9+ with OneUI 2.5/Android 10) to Google Photos or to my laptop, where photos appear in the timeline in the wrong place with the wrong date. This is especially noticeable in photos received on WhatsApp.
+I wrote this tool to fix an issue I've been experiencing when trying to back up photos from my phone (Samsung S9+ with OneUI 2.5/Android 10) to Google Photos or to my computer, where photos appear in the timeline in the wrong place with the wrong date. This is especially noticeable in photos received on WhatsApp.
 
 This tool also doubles as a way to add metadata to photos received on WhatsApp, since they are normally stripped of metadata. The added data is based on the name of the file and uses the date modified that is currently available on the image. This is an imperfect solution, but is the best way I could find to at least make this less of a problem. Depending on when you received and downloaded the image, it may be a couple hours or days away from the actual date the photo was taken.
 
