@@ -1,5 +1,5 @@
 # EXIFix
-A script (WIP) I wrote for myself to fix errors in metadata caused by moving photos within the Samsung Gallery app, especially prevalent with images from WhatsApp
+A work-in-progress Python script I wrote for myself to fix errors in metadata caused by moving photos between albums within the Samsung Gallery app. This is especially prevalent with images from WhatsApp, and is hard to fix as they do not contain any EXIF metadata.
 
 ================================================================
 
